@@ -1,9 +1,6 @@
 package com.gstraliote.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +18,7 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id")
     private Long id;
 
     @NotBlank(message = "O nome é obrigatório")
@@ -36,5 +34,4 @@ public class Client {
 
     @NotBlank(message = "O telefone é obrigatório")
     private String phone;
-
 }
