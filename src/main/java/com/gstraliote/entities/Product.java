@@ -19,6 +19,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     public Long id;
 
     @NotBlank(message = "O nome do produto não pode ser nulo")
