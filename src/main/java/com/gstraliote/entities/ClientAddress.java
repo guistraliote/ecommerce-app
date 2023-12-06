@@ -32,6 +32,9 @@ public class ClientAddress {
     private String Country;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumns({
+            @JoinColumn(name = "client_id", nullable = false),
+            @JoinColumn(name = "client_name")
+    })
     private Client client;
 }
