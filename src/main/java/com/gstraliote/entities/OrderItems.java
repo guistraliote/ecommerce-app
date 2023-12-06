@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
 @Entity
 @Getter
@@ -19,8 +20,10 @@ public class OrderItems {
 
     private Integer quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "product_name")
-    @JoinColumn(name = "product_price")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumns({
+            @JoinColumn(name = "product_name"),
+            @JoinColumn(name = "product_price")
+    })
     private Product product;
 }

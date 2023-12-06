@@ -25,11 +25,7 @@ public class Order {
 
     private double totalOrderValue;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     private Client client;
-
-    public Long getClientId() {
-        return this.client.getId();
-    }
 }

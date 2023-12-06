@@ -25,7 +25,10 @@ public class UserCredentials {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumns({
+            @JoinColumn(name = "client_id", nullable = false),
+            @JoinColumn(name = "client_email")
+    })
     private Client client;
 
     public void setPassword(String plainPassword) {
@@ -36,13 +39,5 @@ public class UserCredentials {
     public boolean checkPassword(String plainPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(plainPassword, this.password);
-    }
-
-    public String getClientEmail() {
-        return this.client.getEmail();
-    }
-
-    public Long getClientId() {
-        return this.client.getId();
     }
 }

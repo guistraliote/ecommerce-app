@@ -30,6 +30,7 @@ public class Client {
 
     @NotBlank(message = "O e-mail é obrigatório")
     @Email(message = "Formato de e-mail inválido")
+    @Column(name = "client_email")
     private String email;
 
     @NotBlank(message = "O telefone é obrigatório")

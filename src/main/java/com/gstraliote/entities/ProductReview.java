@@ -25,15 +25,10 @@ public class ProductReview {
 
     private Integer reviewRate;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumns({
+            @JoinColumn (name = "product_id"),
+            @JoinColumn (name = "product_name")
+    })
     private Product product;
-
-    public Long getProductId() {
-        return this.product.getId();
-    }
-
-    public String getProductName() {
-        return this.product.getName();
-    }
 }

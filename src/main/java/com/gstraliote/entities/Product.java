@@ -40,15 +40,10 @@ public class Product {
 
     LocalDateTime updateDate = LocalDateTime.now();
 
-    @OneToOne
-    @JoinColumn(name = "category_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumns({
+            @JoinColumn (name = "category_id"),
+            @JoinColumn (name = "category_name")
+    })
     private Category category;
-
-    public Long getCategorytId() {
-        return this.category.getId();
-    }
-
-    public String getCategorytName() {
-        return this.category.getName();
-    }
 }

@@ -31,11 +31,7 @@ public class ClientAddress {
 
     private String Country;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
-
-    public Long getClientId() {
-        return this.client.getId();
-    }
 }
