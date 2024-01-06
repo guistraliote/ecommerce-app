@@ -2,11 +2,10 @@ package com.gstraliote.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -15,35 +14,66 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+@EqualsAndHashCode
+@ToString
+@Table(name = "PRODUCT")
+public class Product implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
+    @Column(name = "PRODUCT_ID")
     public Long id;
 
     @NotBlank(message = "O nome do produto não pode ser nulo")
+    @Column(name = "PRODUCT_NAME")
     private String name;
 
+    @Column(name = "PRODUCT_DESCRIPTION")
     private String description;
 
     @NotBlank(message = "O preço do produto não pode ser nulo")
+    @Column(name = "PRODUCT_PRICE")
     private Double price;
 
+    @Column(name = "STOCK_QUANTITY")
     private Integer stockQuantity;
 
+    @Column(name = "PRODUCT_BRAND")
     private String brand;
 
+    @Column(name = "PRODUCT_WEIGHT")
     private Double weight;
 
+    @Column(name = "PRODUCT_ADD_DATE")
     private Date addDate;
 
+    @Column(name = "PRODUCT_UPDATE_NAME")
     LocalDateTime updateDate = LocalDateTime.now();
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumns({
-            @JoinColumn (name = "category_id"),
-            @JoinColumn (name = "category_name")
-    })
+    @JoinColumn (name = "CATEGORY_ID")
     private Category category;
+
+    @Column(name = "CATEGORY")
+    private String productCategory;
+
+    @Column(name = "CATEGORY_PATH")
+    private String productCategoryPath;
+
+    public String getProductCategory() {
+        return category.getName();
+    }
+
+    public String getProductCategoryPath() {
+        return category.getPath();
+    }
+
+    public void setCategoryDetails(Category category) {
+        this.category = category;
+        this.productCategory = category.getName();
+        this.productCategoryPath = category.getPath();
+    }
 }

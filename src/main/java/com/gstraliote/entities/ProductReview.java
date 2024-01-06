@@ -17,18 +17,19 @@ public class ProductReview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PRODUCT_REVIEW_ID")
     private Long id;
 
+    @Column(name = "PRODUCT_REVIEW")
     private String review;
 
+    @Column(name = "PRODUCT_POST_DATE")
     LocalDateTime postDate = LocalDateTime.now();
 
+    @Column(name = "REVIEW_RATE_ID")
     private Integer reviewRate;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumns({
-            @JoinColumn (name = "product_id"),
-            @JoinColumn (name = "product_name")
-    })
+    @JoinColumn (name = "PRODUCT_NAME")
     private Product product;
 }

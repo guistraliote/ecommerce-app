@@ -16,20 +16,26 @@ public class UserCredentials {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_CREDENTIALS_ID")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "USER_LOGIN", nullable = false, unique = true)
     private String userLogin;
 
-    @Column(nullable = false)
+    @Column(name = "USER_PASSWORD", nullable = false)
     private String password;
 
     @OneToOne
-    @JoinColumns({
-            @JoinColumn(name = "client_id", nullable = false),
-            @JoinColumn(name = "client_email")
-    })
+    @JoinColumn(name = "CLIENT_ID")
     private Client client;
+
+    @Column(name = "USER_EMAIL")
+    private String userEmail;
+
+    public void getUserEmail(Client client) {
+        this.client = client;
+        this.userEmail = client.getEmail();
+    }
 
     public void setPassword(String plainPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

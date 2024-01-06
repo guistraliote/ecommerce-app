@@ -1,38 +1,51 @@
 package com.gstraliote.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client {
+@EqualsAndHashCode
+@Table(name = "CLIENT")
+public class Client implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id")
+    @Column(name = "CLIENT_ID")
     private Long id;
 
     @NotBlank(message = "O nome é obrigatório")
+    @Column(name = "CLIENT_NAME")
     private String name;
 
     @NotBlank(message = "O CPF é obrigatório")
     @Pattern(regexp = "\\d{11}", message = "O CPF deve ter 11 dígitos numéricos")
+    @Column(name = "CLIENT_CPF")
     private String cpf;
 
     @NotBlank(message = "O e-mail é obrigatório")
     @Email(message = "Formato de e-mail inválido")
-    @Column(name = "client_email")
+    @Column(name = "CLIENT_EMAIL")
     private String email;
 
     @NotBlank(message = "O telefone é obrigatório")
+    @Column(name = "CLIENT_PHONE")
     private String phone;
+
+    @NotNull
+    @Column(name = "IS_ACTIVE", nullable = false)
+    private Boolean active;
 }

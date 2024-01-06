@@ -2,27 +2,39 @@ package com.gstraliote.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.Type;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+@EqualsAndHashCode
+@ToString
+@Table(name = "CATEGORY")
+public class Category implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "CATEGORY_ID")
     private Long id;
 
-    @NotBlank(message = "A categoria não pode ser nula")
-    @Column(name = "category_name")
+    @NotNull(message = "A categoria não pode ser nula")
+    @Column(name = "CATEGORY_NAME", nullable = false)
     private String name;
 
-    @Column(name = "category_path")
+    @NotNull
+    @Column(name = "IS_ACTIVE", nullable = false)
+    private Boolean active;
+
+    @Column(name = "CATEGORY_PATH")
     private String path;
 }

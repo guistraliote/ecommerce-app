@@ -19,25 +19,33 @@ public class PaymentMethod {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PAYMENT_METHOD_ID")
     private Long id;
 
+    @Column(name = "PAYMENT_METHOD")
     @NotBlank(message = "O método não pode ser nulo")
     private String method;
 
+    @Column(name = "CREDIT_CARD_BRAND")
     private String brand;
 
     @CreditCardNumber
+    @Column(name = "CARD_NUMBER")
     private String cardNumber;
 
+    @Column(name = "CARD_HOLDER")
     private String cardHolder;
 
+    @Column(name = "EXPIRATION_DATE")
     private Date expirationDate;
 
+    @Column(name = "SECURITY_CODE")
     private Integer securityCode;
 
+    @Column(name = "IS_ACTIVE")
     private Boolean active;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "CLIENT_ID", nullable = false)
     private Client client;
 }

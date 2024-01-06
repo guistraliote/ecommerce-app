@@ -20,10 +20,32 @@ public class OrderItems {
 
     private Integer quantity;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumns({
-            @JoinColumn(name = "product_name"),
-            @JoinColumn(name = "product_price")
-    })
+    @JoinTable(name = "ORDER_ITEM_PRODUCT",
+            joinColumns = @JoinColumn(name = "ORDER_ITEM_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
     private Product product;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ORDER_ID")
+    private Order order;
+
+    @Column(name = "PRODUCT_NAME")
+    private String productName;
+
+    @Column(name = "PRODUCT_PRICE")
+    private Double productPrice;
+
+    public String getProductName() {
+        return product.getName();
+    }
+
+    public Double getProductPrice() {
+        return product.getPrice();
+    }
+
+    public void setProductDetails(Product product) {
+        this.product = product;
+        this.productName = product.getName();
+        this.productPrice = product.getPrice();
+    }
 }
