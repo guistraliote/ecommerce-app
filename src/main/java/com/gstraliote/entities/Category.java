@@ -16,6 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Builder
 @Table(name = "CATEGORY")
 public class Category implements Serializable {
 
