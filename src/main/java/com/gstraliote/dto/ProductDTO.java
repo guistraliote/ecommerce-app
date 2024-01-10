@@ -1,19 +1,8 @@
 package com.gstraliote.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@ToString
 public record ProductDTO(
         Long id,
         String name,
