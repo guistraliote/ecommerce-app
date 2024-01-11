@@ -29,24 +29,45 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
         Page<Category> list = categoryRepository.findAll(pageRequest);
-        return list.map(x -> new CategoryDTO(x.getId(), x.getName(), x.getActive(), x.getPath()));
+
+        return list.map(x -> new CategoryDTO(
+                x.getId(),
+                x.getName(),
+                x.getActive(),
+                x.getPath()
+        ));
     }
 
     @Transactional(readOnly = true)
     public CategoryDTO findCategoryById(Long id) {
         Optional<Category> obj = categoryRepository.findById(id);
+
         Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new CategoryDTO(entity.getId(), entity.getName(), entity.getActive(), entity.getPath());
+
+        return new CategoryDTO(
+                entity.getId(),
+                entity.getName(),
+                entity.getActive(),
+                entity.getPath()
+        );
     }
 
     @Transactional
     public CategoryDTO createCategory(CategoryDTO dto) {
         Category entityToSave = new Category();
+
         entityToSave.setName(dto.name());
         entityToSave.setActive(dto.active());
         entityToSave.setPath(dto.path());
+
         Category savedEntity = categoryRepository.save(entityToSave);
-        return new CategoryDTO(savedEntity.getId(), savedEntity.getName(), savedEntity.getActive(), savedEntity.getPath());
+
+        return new CategoryDTO(
+                savedEntity.getId(),
+                savedEntity.getName(),
+                savedEntity.getActive(),
+                savedEntity.getPath()
+        );
     }
 
     @Transactional
@@ -57,7 +78,13 @@ public class CategoryService {
             entity.setName(dto.name());
             entity.setPath(dto.path());
             categoryRepository.save(entity);
-            return new CategoryDTO(entity.getId(), entity.getName(), entity.getActive(), entity.getPath());
+
+            return new CategoryDTO(
+                    entity.getId(),
+                    entity.getName(),
+                    entity.getActive(),
+                    entity.getPath()
+            );
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id " + id + " not found");
         }

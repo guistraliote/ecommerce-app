@@ -42,14 +42,17 @@ public class CategoryAPI {
     @GetMapping(value = "/{id}")
     public ResponseEntity<CategoryDTO> findCategoryById(@PathVariable Long id) {
         CategoryDTO dto = categoryService.findCategoryById(id);
+
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO inputDto) {
         CategoryDTO createdDto = categoryService.createCategory(inputDto);
+
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(createdDto.id()).toUri();
+
         return ResponseEntity.created(uri).body(createdDto);
     }
 
@@ -58,12 +61,14 @@ public class CategoryAPI {
             @PathVariable Long id,
             @RequestBody CategoryDTO inputDto) {
         CategoryDTO updatedDto = categoryService.updateCategory(id, inputDto);
+
         return ResponseEntity.ok().body(updatedDto);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategoryById(id);
+
         return ResponseEntity.noContent().build();
     }
 }
