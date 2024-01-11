@@ -43,6 +43,8 @@ public class CategoryService {
     public CategoryDTO createCategory(CategoryDTO dto) {
         Category entityToSave = new Category();
         entityToSave.setName(dto.name());
+        entityToSave.setActive(dto.active());
+        entityToSave.setPath(dto.path());
         Category savedEntity = categoryRepository.save(entityToSave);
         return new CategoryDTO(savedEntity.getId(), savedEntity.getName(), savedEntity.getActive(), savedEntity.getPath());
     }
@@ -51,7 +53,9 @@ public class CategoryService {
     public CategoryDTO updateCategory(Long id, CategoryDTO dto) {
         try {
             Category entity = categoryRepository.getOne(id);
+            entity.setActive(dto.active());
             entity.setName(dto.name());
+            entity.setPath(dto.path());
             categoryRepository.save(entity);
             return new CategoryDTO(entity.getId(), entity.getName(), entity.getActive(), entity.getPath());
         } catch (EntityNotFoundException e) {
