@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
 
 @Entity
 @Getter
@@ -16,13 +15,14 @@ public class OrderItems {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ORDER_ITEM_ID")
     private Long id;
 
+    @Column(name = "PRODUCT_QUANTITY")
     private Integer quantity;
 
-    @JoinTable(name = "ORDER_ITEM_PRODUCT",
-            joinColumns = @JoinColumn(name = "ORDER_ITEM_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 
     @ManyToOne(fetch = FetchType.EAGER)

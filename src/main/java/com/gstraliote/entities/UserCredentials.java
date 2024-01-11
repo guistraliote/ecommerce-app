@@ -16,7 +16,7 @@ public class UserCredentials {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_CREDENTIALS_ID")
+    @Column(name = "USER_CREDENTIAL_ID")
     private Long id;
 
     @Column(name = "USER_LOGIN", nullable = false, unique = true)

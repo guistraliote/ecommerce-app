@@ -50,14 +50,14 @@ public class Product implements Serializable {
     @Column(name = "PRODUCT_ADD_DATE")
     private Date addDate;
 
-    @Column(name = "PRODUCT_UPDATE_NAME")
+    @Column(name = "PRODUCT_UPDATE_DATE")
     LocalDateTime updateDate = LocalDateTime.now();
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "CATEGORY_ID")
     private Category category;
 
-    @Column(name = "CATEGORY")
+    @Column(name = "CATEGORY_NAME")
     private String productCategory;
 
     @Column(name = "CATEGORY_PATH")
