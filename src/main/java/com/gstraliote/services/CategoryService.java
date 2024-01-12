@@ -72,8 +72,7 @@ public class CategoryService {
 
     @Transactional
     public CategoryDTO updateCategory(Long id, CategoryDTO dto) {
-        try {
-            Category entity = categoryRepository.getOne(id);
+        Category entity = categoryRepository.getOne(id);
             entity.setActive(dto.active());
             entity.setName(dto.name());
             entity.setPath(dto.path());
@@ -85,20 +84,9 @@ public class CategoryService {
                     entity.getActive(),
                     entity.getPath()
             );
-        } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Id " + id + " not found");
-        }
     }
 
     public void deleteCategoryById(Long id) {
-        try {
-            categoryRepository.deleteById(id);
-        }
-        catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Id " + id + " not found");
-        }
-        catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Integrity violation");
-        }
+        categoryRepository.deleteById(id);
     }
 }
