@@ -51,4 +51,52 @@ public class ClientService {
                 entity.getActive()
         );
     }
+
+    @Transactional
+    public ClientDTO createClient(ClientDTO dto) {
+        Client entityToSave = new Client();
+
+        entityToSave.setName(dto.name());
+        entityToSave.setActive(dto.active());
+        entityToSave.setCpf(dto.cpf());
+        entityToSave.setEmail(dto.email());
+        entityToSave.setPhone(dto.phone());
+
+        Client savedEntity = clientRepository.save(entityToSave);
+
+        return new ClientDTO(
+                savedEntity.getId(),
+                savedEntity.getName(),
+                savedEntity.getCpf(),
+                savedEntity.getEmail(),
+                savedEntity.getPhone(),
+                savedEntity.getActive()
+        );
+    }
+
+    @Transactional
+    public ClientDTO updateClient(Long id, ClientDTO dto) {
+        Client entity = clientRepository.getOne(id);
+
+        entity.setName(dto.name());
+        entity.setActive(dto.active());
+        entity.setCpf(dto.cpf());
+        entity.setEmail(dto.email());
+        entity.setPhone(dto.phone());
+
+        clientRepository.save(entity);
+
+        return new ClientDTO(
+                entity.getId(),
+                entity.getName(),
+                entity.getCpf(),
+                entity.getEmail(),
+                entity.getPhone(),
+                entity.getActive()
+        );
+    }
+
+    public void deleteClientById(Long id) {
+        clientRepository.deleteById(id);
+    }
 }
