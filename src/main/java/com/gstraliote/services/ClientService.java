@@ -26,21 +26,46 @@ public class ClientService {
     public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
         Page<Client> list = clientRepository.findAll(pageRequest);
 
-        return list.map(x -> new ClientDTO(
-                x.getId(),
-                x.getName(),
-                x.getCpf(),
-                x.getEmail(),
-                x.getPhone(),
-                x.getActive()
-        ));
+        return list.map(this::convertToDTO);
     }
 
     @Transactional(readOnly = true)
     public ClientDTO findClientById(Long id) {
+        Client entity = getClientById(id);
+
+        return convertToDTO(entity);
+    }
+
+    @Transactional
+    public ClientDTO createClient(ClientDTO dto) {
+        Client entityToSave = convertToEntity(dto);
+        Client savedEntity = clientRepository.save(entityToSave);
+
+        return convertToDTO(savedEntity);
+    }
+
+    @Transactional
+    public ClientDTO updateClient(Long id, ClientDTO dto) {
+        Client entity = getClientById(id);
+
+        updateEntityFromDTO(entity, dto);
+
+        clientRepository.save(entity);
+
+        return convertToDTO(entity);
+    }
+
+    public void deleteClientById(Long id) {
+        clientRepository.deleteById(id);
+    }
+
+    private Client getClientById(Long id) {
         Optional<Client> obj = clientRepository.findById(id);
 
-        Client entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+        return obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+    }
+
+    private ClientDTO convertToDTO(Client entity) {
 
         return new ClientDTO(
                 entity.getId(),
@@ -51,52 +76,18 @@ public class ClientService {
                 entity.getActive()
         );
     }
+    private Client convertToEntity(ClientDTO dto) {
+        Client entity = new Client();
 
-    @Transactional
-    public ClientDTO createClient(ClientDTO dto) {
-        Client entityToSave = new Client();
+        updateEntityFromDTO(entity, dto);
 
-        entityToSave.setName(dto.name());
-        entityToSave.setActive(dto.active());
-        entityToSave.setCpf(dto.cpf());
-        entityToSave.setEmail(dto.email());
-        entityToSave.setPhone(dto.phone());
-
-        Client savedEntity = clientRepository.save(entityToSave);
-
-        return new ClientDTO(
-                savedEntity.getId(),
-                savedEntity.getName(),
-                savedEntity.getCpf(),
-                savedEntity.getEmail(),
-                savedEntity.getPhone(),
-                savedEntity.getActive()
-        );
+        return entity;
     }
-
-    @Transactional
-    public ClientDTO updateClient(Long id, ClientDTO dto) {
-        Client entity = clientRepository.getOne(id);
-
+    private void updateEntityFromDTO(Client entity, ClientDTO dto) {
         entity.setName(dto.name());
         entity.setActive(dto.active());
         entity.setCpf(dto.cpf());
         entity.setEmail(dto.email());
         entity.setPhone(dto.phone());
-
-        clientRepository.save(entity);
-
-        return new ClientDTO(
-                entity.getId(),
-                entity.getName(),
-                entity.getCpf(),
-                entity.getEmail(),
-                entity.getPhone(),
-                entity.getActive()
-        );
-    }
-
-    public void deleteClientById(Long id) {
-        clientRepository.deleteById(id);
     }
 }
