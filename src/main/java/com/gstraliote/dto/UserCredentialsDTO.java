@@ -4,6 +4,8 @@ public record UserCredentialsDTO(
         Long id,
         String userLogin,
         String userEmail,
-        Long clientId
+        String password,
+        Long clientId,
+        String userType
 ) {
 }

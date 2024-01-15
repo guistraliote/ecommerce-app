@@ -32,10 +32,8 @@ public class UserCredentials {
     @Column(name = "USER_EMAIL")
     private String userEmail;
 
-    public void getUserEmail(Client client) {
-        this.client = client;
-        this.userEmail = client.getEmail();
-    }
+    @Column(name = "USER_TYPE")
+    private String userType;
 
     public void setPassword(String plainPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
