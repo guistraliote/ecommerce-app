@@ -23,7 +23,7 @@ public class ProductReview {
     @Column(name = "PRODUCT_REVIEW")
     private String review;
 
-    @Column(name = "PRODUCT_POST_DATE")
+    @Column(name = "REVIEW_POST_DATE")
     LocalDateTime postDate = LocalDateTime.now();
 
     @Column(name = "REVIEW_RATE_ID")
