@@ -29,22 +29,18 @@ public class OrderItems {
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
+    @Column(name ="PRODUCT_ID")
+    private Long productId;
+
     @Column(name = "PRODUCT_NAME")
     private String productName;
 
     @Column(name = "PRODUCT_PRICE")
     private Double productPrice;
 
-    public String getProductName() {
-        return product.getName();
-    }
-
-    public Double getProductPrice() {
-        return product.getPrice();
-    }
-
     public void setProductDetails(Product product) {
         this.product = product;
+        this.productId = product.getId();
         this.productName = product.getName();
         this.productPrice = product.getPrice();
     }

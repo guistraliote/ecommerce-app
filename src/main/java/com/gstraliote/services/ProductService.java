@@ -62,6 +62,11 @@ public class ProductService {
         Product productEntity = new Product();
         productEntity.setName(productDTO.name());
         productEntity.setDescription(productDTO.description());
+        productEntity.setPrice(productDTO.price());
+        productEntity.setBrand(productDTO.brand());
+        productEntity.setAddDate(productDTO.addDate());
+        productEntity.setStockQuantity(productDTO.stockQuantity());
+        productEntity.setUpdateDate(productDTO.updateDate());
 
         if (productDTO.categoryId() != null) {
             Category category = categoryRepository.findById(productDTO.categoryId())

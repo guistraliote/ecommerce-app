@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/product")
 public class ProductAPI {
 
     private final ProductService productService;

@@ -1,7 +1,9 @@
 package com.gstraliote.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.io.Serial;
@@ -34,7 +36,8 @@ public class Product implements Serializable {
     @Column(name = "PRODUCT_DESCRIPTION")
     private String description;
 
-    @NotBlank(message = "O preço do produto não pode ser nulo")
+    @NotNull(message = "O preço do produto não pode ser nulo")
+    @DecimalMin(value = "0.0", inclusive = false, message = "O preço do produto deve ser maior que zero")
     @Column(name = "PRODUCT_PRICE")
     private Double price;
 
