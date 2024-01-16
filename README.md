@@ -24,3 +24,7 @@ docker run -d
 -e POSTGRES_DB=ecommerceapp   
 -p 5440:5432   
 postgres:latest
+
+ActiveMQ Configs:
+
+docker run -it --rm -p 61617:61616 -p 8162:8161 --name activemq webcenter/activemq:latest
