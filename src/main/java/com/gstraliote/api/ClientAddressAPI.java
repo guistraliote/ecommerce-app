@@ -27,11 +27,9 @@ public class ClientAddressAPI {
     @GetMapping
     public ResponseEntity<List<ClientAddressDTO>> getAllClientAddressesPaged(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
-            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
-            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
+            @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage
     ) {
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage);
 
         Page<ClientAddressDTO> pageResult = clientAddressService.findAllPaged(pageRequest);
         List<ClientAddressDTO> list = pageResult.getContent();

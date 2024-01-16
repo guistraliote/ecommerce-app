@@ -44,7 +44,7 @@ public class ClientAddress implements Serializable {
     @Column(name = "ADDRESS_COUNTRY")
     private String Country;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENT_ID")
     private Client client;
 

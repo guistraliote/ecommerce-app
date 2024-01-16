@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Pattern;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -48,4 +50,11 @@ public class Client implements Serializable {
     @NotNull
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean active;
+
+    @OneToMany(
+            mappedBy = "client",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<ClientAddress> addresses = new ArrayList<>();
 }
