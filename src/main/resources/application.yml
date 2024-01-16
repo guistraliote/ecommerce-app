@@ -1,5 +1,15 @@
-spring.datasource.url=jdbc:postgresql://localhost:5440/ecommerceapp
-spring.datasource.username=postgres
-spring.datasource.password=postgres
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+# Configurações do banco de dados PostgreSQL
+spring:
+  datasource:
+    url: jdbc:postgresql://172.17.0.2:5432/ecommerceapp
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  # Configurações do Hibernate
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update

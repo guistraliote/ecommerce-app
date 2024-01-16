@@ -56,7 +56,7 @@ public class Product implements Serializable {
     @Column(name = "PRODUCT_UPDATE_DATE")
     LocalDateTime updateDate = LocalDateTime.now();
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "CATEGORY_ID")
     private Category category;
 

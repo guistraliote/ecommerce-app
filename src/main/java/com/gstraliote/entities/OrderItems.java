@@ -29,9 +29,6 @@ public class OrderItems {
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
-    @Column(name ="PRODUCT_ID")
-    private Long productId;
-
     @Column(name = "PRODUCT_NAME")
     private String productName;
 
@@ -40,7 +37,6 @@ public class OrderItems {
 
     public void setProductDetails(Product product) {
         this.product = product;
-        this.productId = product.getId();
         this.productName = product.getName();
         this.productPrice = product.getPrice();
     }

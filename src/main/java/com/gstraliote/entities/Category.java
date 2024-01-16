@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,4 +39,7 @@ public class Category implements Serializable {
 
     @Column(name = "CATEGORY_PATH")
     private String path;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Product> products;
 }
