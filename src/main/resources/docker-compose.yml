@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  activemq:
+    image: webcenter/activemq:latest
+    container_name: activemq_ecommerceapp
+    ports:
+      - "61617:61616"
+      - "8162:8161"
+    environment:
+      ACTIVEMQ_USER: admin
+      ACTIVEMQ_PASSWORD: admin

@@ -5,6 +5,12 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  activemq:
+    broker-url: tcp://localhost:61617
+    user: admin
+    password: admin
+    in-memory: true
+    pooled: false
 
   # Configurações do Hibernate
   jpa:
