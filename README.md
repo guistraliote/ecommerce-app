@@ -11,7 +11,7 @@ PostgreSQL
 
 Entity-relational Diagram:
 
-![image](https://github.com/guistraliote/ecommerce-app/assets/88463468/06d423f6-e887-472b-af37-7c29e343def5)
+![ecommerceapp - public](https://github.com/guistraliote/ecommerce-app/assets/88463468/8e5ba1fc-161d-4d53-b1c8-d8ff7cfdbe3c)
 
 *This diagram is still in progress.
 
