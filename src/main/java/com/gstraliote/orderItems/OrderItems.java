@@ -30,16 +30,4 @@ public class OrderItems {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ORDER_ID")
     private Order order;
-
-    @Column(name = "PRODUCT_NAME")
-    private String productName;
-
-    @Column(name = "PRODUCT_PRICE")
-    private Double productPrice;
-
-    public void setProductDetails(Product product) {
-        this.product = product;
-        this.productName = product.getName();
-        this.productPrice = product.getPrice();
-    }
 }

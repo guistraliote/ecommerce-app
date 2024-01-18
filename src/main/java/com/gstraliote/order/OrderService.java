@@ -1,9 +1,11 @@
 package com.gstraliote.order;
 
-import com.gstraliote.orderItems.OrderItemsDTO;
 import com.gstraliote.client.Client;
-import com.gstraliote.orderItems.OrderItems;
 import com.gstraliote.client.ClientRepository;
+import com.gstraliote.orderItems.OrderItemsDTO;
+import com.gstraliote.orderItems.OrderItems;
+import com.gstraliote.product.Product;
+import com.gstraliote.product.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,18 +19,39 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ClientRepository clientRepository;
+    private final ProductRepository productRepository;
 
-    public OrderService(OrderRepository orderRepository, ClientRepository clientRepository) {
+    public OrderService(OrderRepository orderRepository, ClientRepository clientRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.clientRepository = clientRepository;
+        this.productRepository = productRepository;
     }
 
     @Transactional
-    public OrderDTO createOrder(OrderDTO orderDTO) {
+    public void createOrder(OrderDTO orderDTO) {
+        // Convert OrderDTO to Order entity
         Order orderEntity = convertToEntity(orderDTO);
+
+        // Fetch products with details (name and price) based on IDs from OrderDTO
+        List<Product> products = orderDTO.orderItems().stream()
+                .map(orderItemsDTO -> {
+                    Product product = productRepository.findById(orderItemsDTO.productId())
+                            .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado com o ID: " + orderItemsDTO.productId()));
+                    return product;
+                })
+                .toList();
+
+        // Convert OrderItemsDTO to OrderItems entity, including the order ID and product details
+        List<OrderItems> orderItems = orderDTO.orderItems().stream()
+                .map(orderItemsDTO -> convertOrderItemsToEntity(orderItemsDTO, orderEntity, products))
+                .collect(Collectors.toList());
+
+        orderEntity.setOrderItems(orderItems);
+
+        // Save the order entity
         Order savedOrder = orderRepository.save(orderEntity);
 
-        return convertToDTO(savedOrder);
+        convertToDTO(savedOrder);
     }
 
     @Transactional(readOnly = true)
@@ -46,8 +69,8 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDTO updateOrder(Long orderId, OrderDTO updatedOrderDTO) {
-        return orderRepository.findById(orderId)
+    public void updateOrder(Long orderId, OrderDTO updatedOrderDTO) {
+        orderRepository.findById(orderId)
                 .map(existingOrder -> {
                     updateOrderEntity(existingOrder, updatedOrderDTO);
                     Order updatedOrder = orderRepository.save(existingOrder);
@@ -72,19 +95,24 @@ public class OrderService {
             orderEntity.setClient(client);
         }
 
-        if (orderDTO.orderItems() != null) {
-            List<OrderItems> orderItems = orderDTO.orderItems().stream()
-                    .map(this::convertToEntity)
-                    .collect(Collectors.toList());
-            orderEntity.setOrderItems(orderItems);
-        }
-
         return orderEntity;
     }
 
-    private OrderItems convertToEntity(OrderItemsDTO orderItemsDTO) {
+    private OrderItems convertOrderItemsToEntity(OrderItemsDTO orderItemsDTO, Order orderEntity, List<Product> products) {
         OrderItems orderItemsEntity = new OrderItems();
         orderItemsEntity.setQuantity(orderItemsDTO.quantity());
+
+        // Encontre o produto correspondente no List<Product> usando o ID do OrderItemsDTO
+        Product product = products.stream()
+                .filter(p -> p.getId().equals(orderItemsDTO.productId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado com o ID: " + orderItemsDTO.productId()));
+
+        // Defina os detalhes do produto em OrderItemsEntity
+        orderItemsEntity.setProduct(product);
+
+        // Configurar outros detalhes do pedido
+        orderItemsEntity.setOrder(orderEntity);
 
         return orderItemsEntity;
     }
@@ -107,12 +135,11 @@ public class OrderService {
     }
 
     private OrderItemsDTO convertToDTO(OrderItems orderItemsEntity) {
+
         return new OrderItemsDTO(
                 orderItemsEntity.getId(),
                 orderItemsEntity.getQuantity(),
-                orderItemsEntity.getProduct().getId(),
-                orderItemsEntity.getProductName(),
-                orderItemsEntity.getProductPrice()
+                orderItemsEntity.getProduct().getId()
         );
     }
 

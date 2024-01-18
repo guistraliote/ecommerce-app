@@ -11,6 +11,8 @@ spring:
     password: admin
     in-memory: true
     pooled: false
+    packages:
+      trust-all: true
 
   # Configurações do Hibernate
   jpa:
