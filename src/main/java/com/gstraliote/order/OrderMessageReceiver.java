@@ -12,9 +12,9 @@ public class OrderMessageReceiver {
 
     @JmsListener(destination = Queues.ORDER)
     public void receiveMessage(OrderMessageWrapper messageWrapper) {
-        OrderDTO orderDTO = messageWrapper.orderDTO();
-        Long orderId = messageWrapper.orderId();
-        HttpMethods httpMethod = messageWrapper.httpMethod();
+        OrderDTO orderDTO = messageWrapper.getOrderDTO();
+        Long orderId = messageWrapper.getOrderId();
+        HttpMethods httpMethod = messageWrapper.getHttpMethod();
 
         switch (httpMethod) {
             case POST:
@@ -28,5 +28,6 @@ public class OrderMessageReceiver {
                 break;
         }
 
+        System.out.println("Received order: " + orderDTO);
     }
 }
