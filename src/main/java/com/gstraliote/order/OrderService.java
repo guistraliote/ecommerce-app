@@ -29,26 +29,19 @@ public class OrderService {
 
     @Transactional
     public void createOrder(OrderDTO orderDTO) {
-        // Convert OrderDTO to Order entity
         Order orderEntity = convertToEntity(orderDTO);
 
-        // Fetch products with details (name and price) based on IDs from OrderDTO
         List<Product> products = orderDTO.orderItems().stream()
-                .map(orderItemsDTO -> {
-                    Product product = productRepository.findById(orderItemsDTO.productId())
-                            .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado com o ID: " + orderItemsDTO.productId()));
-                    return product;
-                })
+                .map(orderItemsDTO -> productRepository.findById(orderItemsDTO.productId())
+                        .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado com o ID: " + orderItemsDTO.productId())))
                 .toList();
 
-        // Convert OrderItemsDTO to OrderItems entity, including the order ID and product details
         List<OrderItems> orderItems = orderDTO.orderItems().stream()
                 .map(orderItemsDTO -> convertOrderItemsToEntity(orderItemsDTO, orderEntity, products))
                 .collect(Collectors.toList());
 
         orderEntity.setOrderItems(orderItems);
 
-        // Save the order entity
         Order savedOrder = orderRepository.save(orderEntity);
 
         convertToDTO(savedOrder);
@@ -102,16 +95,13 @@ public class OrderService {
         OrderItems orderItemsEntity = new OrderItems();
         orderItemsEntity.setQuantity(orderItemsDTO.quantity());
 
-        // Encontre o produto correspondente no List<Product> usando o ID do OrderItemsDTO
         Product product = products.stream()
                 .filter(p -> p.getId().equals(orderItemsDTO.productId()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado com o ID: " + orderItemsDTO.productId()));
 
-        // Defina os detalhes do produto em OrderItemsEntity
         orderItemsEntity.setProduct(product);
 
-        // Configurar outros detalhes do pedido
         orderItemsEntity.setOrder(orderEntity);
 
         return orderItemsEntity;
