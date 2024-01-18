@@ -9,7 +9,7 @@ public record OrderDTO(
         Integer id,
         LocalDateTime orderDate,
         String status,
-        double totalOrderValue,
+        Double totalOrderValue,
         Long clientId,
         List<OrderItemsDTO> orderItems
 ) {

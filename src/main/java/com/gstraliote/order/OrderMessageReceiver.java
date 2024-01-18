@@ -1,15 +1,32 @@
 package com.gstraliote.order;
 
 import com.gstraliote.queue.Queues;
+import com.gstraliote.utils.enums.HttpMethods;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OrderMessageReceiver {
 
-    @JmsListener(destination = Queues.ORDER)
-    public void receiveMessage(OrderDTO orderDTO) {
+    private OrderService orderService;
 
-        System.out.println("Received order: " + orderDTO);
+    @JmsListener(destination = Queues.ORDER)
+    public void receiveMessage(OrderMessageWrapper messageWrapper) {
+        OrderDTO orderDTO = messageWrapper.orderDTO();
+        Long orderId = messageWrapper.orderId();
+        HttpMethods httpMethod = messageWrapper.httpMethod();
+
+        switch (httpMethod) {
+            case POST:
+                orderService.createOrder(orderDTO);
+                break;
+            case PUT:
+                orderService.updateOrder(orderId, orderDTO);
+                break;
+            case DELETE:
+                orderService.deleteOrder(orderId);
+                break;
+        }
+
     }
 }

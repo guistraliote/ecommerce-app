@@ -1,6 +1,7 @@
 package com.gstraliote.order;
 
 import com.gstraliote.queue.Queues;
+import com.gstraliote.utils.enums.HttpMethods;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,9 @@ public class OrderMessageSender {
         this.jmsTemplate = jmsTemplate;
     }
 
-    public void sendMessage(OrderDTO orderDTO) {
-        jmsTemplate.convertAndSend(Queues.ORDER, orderDTO);
+    public void sendMessage(OrderDTO orderDTO, Long orderId, HttpMethods httpMethod) {
+        OrderMessageWrapper messageWrapper = new OrderMessageWrapper(orderDTO, orderId, httpMethod);
+
+        jmsTemplate.convertAndSend(Queues.ORDER, messageWrapper);
     }
 }

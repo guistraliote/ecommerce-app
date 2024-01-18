@@ -1,5 +1,6 @@
 package com.gstraliote.order;
 
+import com.gstraliote.utils.enums.HttpMethods;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -10,15 +11,29 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/order")
 public class OrderAPI {
+
     private final OrderService orderService;
 
-    public OrderAPI(OrderService orderService) {
+    private final OrderMessageSender orderMessageSender;
+
+    public OrderAPI(OrderService orderService, OrderMessageSender orderMessageSender) {
         this.orderService = orderService;
+        this.orderMessageSender = orderMessageSender;
     }
 
     @PostMapping
     public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
-        OrderDTO createdOrder = orderService.createOrder(orderDTO);
+        OrderDTO createdOrder = new OrderDTO(
+                orderDTO.id(),
+                orderDTO.orderDate(),
+                orderDTO.status(),
+                orderDTO.totalOrderValue(),
+                orderDTO.clientId(),
+                orderDTO.orderItems()
+        );
+
+        orderMessageSender.sendMessage(orderDTO, null, HttpMethods.POST);
+
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
 
@@ -43,15 +58,27 @@ public class OrderAPI {
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long orderId, @RequestBody OrderDTO updatedOrderDTO) {
-        OrderDTO updatedOrder = orderService.updateOrder(orderId, updatedOrderDTO);
+    public ResponseEntity<OrderDTO> updateOrder(
+            @PathVariable Long orderId,
+            @RequestBody OrderDTO updatedOrderDTO) {
 
-        return ResponseEntity.ok(updatedOrder);
+        OrderDTO updateOrder = new OrderDTO(
+                updatedOrderDTO.id(),
+                updatedOrderDTO.orderDate(),
+                updatedOrderDTO.status(),
+                updatedOrderDTO.totalOrderValue(),
+                updatedOrderDTO.clientId(),
+                updatedOrderDTO.orderItems()
+        );
+
+        orderMessageSender.sendMessage(updateOrder, orderId, HttpMethods.PUT);
+
+        return ResponseEntity.ok(updatedOrderDTO);
     }
 
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
-        orderService.deleteOrder(orderId);
+        orderMessageSender.sendMessage(null, orderId, HttpMethods.DELETE);
 
         return ResponseEntity.noContent().build();
     }
